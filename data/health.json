@@ -1,0 +1,67 @@
+{
+ "note": "diagnostics for the maintainers. The app never reads this.",
+ "built": "2026-08-22T19:31Z",
+ "build": {
+  "gh_step.py": "067e5307c5",
+  "make_desk.py": "92cb60cf1b",
+  "bigmove.py": "77a718774d",
+  "verify.py": "ef16b6ccf0",
+  "feed.py": null,
+  "simulator.py": "887fe4b7fa",
+  "pricecheck.py": "7c4da1f2a1",
+  "econ.py": "58947f4fb9",
+  "news.py": "f6443e6aef",
+  ".github/workflows/step.yml": "b032ce2713"
+ },
+ "run": {
+  "stepped": "2026-08-22T04:01Z",
+  "feed": "2026-08-21T21:00Z",
+  "stall": null,
+  "price": 4604.8
+ },
+ "prices": {
+  "candles": [
+   "C S1: HTTPError: HTTP Error 404: Not Found",
+   "C S1: HTTPError: HTTP Error 404: Not Found",
+   "C S2: 2306 bars \u2014 used"
+  ],
+  "spot": [
+   "B: 4604.4",
+   "D: HTTPError: HTTP Error 403: Forbidden",
+   "E: HTTPError: HTTP Error 404: Not Found",
+   "F: 4603.33",
+   "MIDDLE of 2: 4603.86"
+  ],
+  "spot_from": "B+F",
+  "src": "S2"
+ },
+ "checks": [
+  {
+   "t": 1787142600,
+   "pct": 1.54,
+   "check": {
+    "checked_at": 1787194372,
+    "ours": 1.64,
+    "tol": 0.15,
+    "A": 1.77,
+    "A_why": "ok",
+    "B": 1.535,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: +1.77% and +1.53% against our +1.64% (allowing 0.25 on a move this size)",
+    "rule": 2
+   }
+  }
+ ],
+ "flows": {
+  "fetch": "cot 1062015B; etf 537783B xlsx/zip",
+  "t": "2026-08-22T14:31Z",
+  "have_data": true,
+  "macro_inputs": {
+   "real_chg": -0.04,
+   "dxy_chg_pct": -0.14,
+   "oil_chg_pct": 2.0
+  }
+ },
+ "era": 3
+}
