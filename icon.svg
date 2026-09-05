@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- THE mark: FOUR gold triangles on a black tile. Four, always.
+       This file had drifted to five triangles on an inner slab, which is why
+       a phone's home-screen icon and the app's own header no longer agreed.
+       It now carries exactly the geometry index.html draws, with a gradient
+       fill for the large sizes a home screen renders. -->
+  <defs>
+    <linearGradient id="gold" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#d99b0d"/><stop offset="0.55" stop-color="#f5c445"/>
+      <stop offset="1" stop-color="#ffe79c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="104" fill="#0a0a0a"/>
+  <rect x="4" y="4" width="504" height="504" rx="102" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="8"/>
+  <path d="M178 106.0 L232.0 200 L124.0 200 Z" fill="url(#gold)"/>
+  <path d="M330 167.7 L398.0 286 L262.0 286 Z" fill="url(#gold)"/>
+  <path d="M206 267.8 L282.0 400 L130.0 400 Z" fill="url(#gold)"/>
+  <path d="M338 365.5 L390.0 456 L286.0 456 Z" fill="url(#gold)"/>
+</svg>

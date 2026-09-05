@@ -1,0 +1,147 @@
+{
+ "note": "diagnostics for the maintainers. The app never reads this.",
+ "built": "2026-09-05T22:01Z",
+ "build": {
+  "gh_step.py": "067e5307c5",
+  "make_desk.py": "92cb60cf1b",
+  "bigmove.py": "77a718774d",
+  "verify.py": "ef16b6ccf0",
+  "feed.py": null,
+  "simulator.py": "887fe4b7fa",
+  "pricecheck.py": "7c4da1f2a1",
+  "econ.py": "58947f4fb9",
+  "news.py": "f6443e6aef",
+  ".github/workflows/step.yml": "17d592bbe1"
+ },
+ "run": {
+  "stepped": "2026-09-05T04:01Z",
+  "feed": "2026-09-04T21:00Z",
+  "stall": null,
+  "price": 4431.1
+ },
+ "prices": {
+  "candles": [
+   "C S1: HTTPError: HTTP Error 404: Not Found",
+   "C S1: HTTPError: HTTP Error 404: Not Found",
+   "C S2: 2302 bars \u2014 used"
+  ],
+  "spot": [
+   "B: 4431.1",
+   "D: HTTPError: HTTP Error 403: Forbidden",
+   "E: HTTPError: HTTP Error 404: Not Found",
+   "F: 4429.99",
+   "MIDDLE of 2: 4430.55"
+  ],
+  "spot_from": "B+F",
+  "src": "S2"
+ },
+ "checks": [
+  {
+   "t": 1787142600,
+   "pct": 1.54,
+   "check": {
+    "checked_at": 1787194372,
+    "ours": 1.64,
+    "tol": 0.15,
+    "A": 1.77,
+    "A_why": "ok",
+    "B": 1.535,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: +1.77% and +1.53% against our +1.64% (allowing 0.25 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1787925600,
+   "pct": -1.68,
+   "check": {
+    "checked_at": 1787927466,
+    "ours": -1.68,
+    "tol": 0.15,
+    "A": -1.808,
+    "A_why": "ok",
+    "B": -1.68,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -1.81% and -1.68% against our -1.68% (allowing 0.25 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1787932800,
+   "pct": -1.03,
+   "check": {
+    "checked_at": 1788012070,
+    "ours": -1.03,
+    "tol": 0.15,
+    "A": -0.893,
+    "A_why": "ok",
+    "B": -1.034,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -0.89% and -1.03% against our -1.03% (allowing 0.15 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1788249600,
+   "pct": -0.86,
+   "check": {
+    "checked_at": 1788251491,
+    "ours": -0.86,
+    "tol": 0.15,
+    "A": -0.795,
+    "A_why": "ok",
+    "B": -0.862,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -0.80% and -0.86% against our -0.86% (allowing 0.15 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1788438600,
+   "pct": 1.09,
+   "check": {
+    "checked_at": 1788440510,
+    "ours": 1.09,
+    "tol": 0.15,
+    "A": 1.03,
+    "A_why": "ok",
+    "B": 1.09,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: +1.03% and +1.09% against our +1.09% (allowing 0.16 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1788525000,
+   "pct": -1.54,
+   "check": {
+    "checked_at": 1788526904,
+    "ours": -1.54,
+    "tol": 0.15,
+    "A": -1.701,
+    "A_why": "ok",
+    "B": -1.54,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -1.70% and -1.54% against our -1.54% (allowing 0.23 on a move this size)",
+    "rule": 2
+   }
+  }
+ ],
+ "flows": {
+  "fetch": "cot 1062016B; etf 538832B xlsx/zip",
+  "t": "2026-09-05T20:01Z",
+  "have_data": true,
+  "macro_inputs": {
+   "real_chg": 0.08,
+   "dxy_chg_pct": 0.58,
+   "oil_chg_pct": 9.0
+  }
+ },
+ "era": 3
+}
