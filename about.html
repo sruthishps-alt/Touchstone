@@ -1,0 +1,348 @@
+<!doctype html>
+<!-- Touchstone's shop window. Built to be LOOKED AT rather than read: colour
+     tiles, live numbers, one line each. Nobody reads a landing page; they scan
+     it, and either tap or leave. Everything factual is pulled live from
+     data/desk.json — the same file the app reads — so the marketing can never
+     drift ahead of the truth. The English/Thai toggle shares the app's own
+     language key. Published beside the app by the same workflow. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Touchstone — learn to read the gold market, with nothing at risk</title>
+<meta name="description" content="Read the market's conditions, weigh every headline, test your own strategy against a year of real gold prices. Free, honest, and sealed to the Bitcoin blockchain.">
+<meta property="og:title" content="Touchstone — learn to read the market">
+<meta property="og:description" content="Live gold bots, a strategy lab, news weighed headline by headline, and a record nobody can edit. Free. Nothing at risk.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://touchstone.zb-international.com/about.html">
+<meta property="og:image" content="https://touchstone.zb-international.com/share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:site_name" content="Touchstone">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Touchstone — learn to read the market">
+<meta name="twitter:description" content="Live gold bots, a strategy lab, news weighed headline by headline, and a record nobody can edit. Free. Nothing at risk.">
+<meta name="twitter:image" content="https://touchstone.zb-international.com/share.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{
+  --plane:#090806; --surface:#141310; --raise:#1c1a16;
+  --ink:#f8f6f0; --ink2:#c3bdad; --muted:#8a8578;
+  --grid:#272319; --ring:rgba(245,196,69,.20); --ring2:rgba(245,196,69,.45);
+  --gold:#f5c445; --gold2:#c98500; --goldsoft:rgba(245,196,69,.09);
+  --up:#12b312; --down:#e35b5b; --blue:#3987e5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:17px;scroll-behavior:smooth}
+body{background:var(--plane);color:var(--ink);
+  font-family:"Avenir Next",Avenir,"Segoe UI",system-ui,-apple-system,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px}
+
+header{display:flex;align-items:center;gap:11px;padding:16px 0}
+header .mk{width:38px;height:38px}
+header .name{font-weight:800;font-size:1.12rem;letter-spacing:-.01em}
+header .by{color:var(--muted);font-size:.68rem;margin-top:-3px}
+header .sp{flex:1}
+.langbtn{background:none;border:1px solid var(--grid);color:var(--ink2);
+  border-radius:20px;padding:6px 14px;font-size:.78rem;cursor:pointer}
+.langbtn:hover{border-color:var(--ring2);color:var(--gold)}
+
+.hero{padding:26px 0 6px;position:relative}
+.hero:before{content:"";position:absolute;top:-90px;left:50%;transform:translateX(-50%);
+  width:680px;height:340px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(245,196,69,.10),transparent)}
+.hero h1{font-size:2.5rem;line-height:1.1;letter-spacing:-.025em;font-weight:800;max-width:15ch}
+.hero h1 b{color:var(--gold)}
+.hero .say{color:var(--ink2);margin:16px 0 22px;font-size:1.05rem;max-width:34ch}
+.cta{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#160f02;
+  font-weight:800;text-decoration:none;padding:14px 28px;border-radius:999px;font-size:1.02rem;
+  box-shadow:0 8px 30px rgba(245,196,69,.22)}
+.cta:hover{background:#ffd766}
+.sub{color:var(--muted);font-size:.76rem;margin-top:11px}
+
+.live{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin:26px 0 4px}
+.stat{background:linear-gradient(160deg,var(--raise),var(--surface));
+  border:1px solid var(--grid);border-radius:16px;padding:13px 14px}
+.stat .k{color:var(--muted);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em}
+.stat .v{font-size:1.5rem;font-weight:800;margin-top:3px;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.stat .s{color:var(--ink2);font-size:.7rem;margin-top:1px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--up);
+  margin-right:6px;vertical-align:middle;animation:bp 2.4s infinite}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.25}}
+.livehint{color:var(--muted);font-size:.68rem;margin:8px 0 0}
+
+.sec{margin:52px 0 0}
+.eyebrow{color:var(--gold);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.sec h2{font-size:1.55rem;margin:6px 0 20px;letter-spacing:-.02em;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--grid);border-radius:18px;padding:18px;
+  position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--ring2);transform:translateY(-2px)}
+.card .n{position:absolute;right:14px;top:10px;font-size:2.6rem;font-weight:800;
+  color:rgba(255,255,255,.04);line-height:1}
+.card h3{font-size:1rem;margin-bottom:5px;font-weight:800}
+.card p{color:var(--ink2);font-size:.84rem}
+.viz{margin:12px 0 2px;height:44px;display:flex;align-items:flex-end;gap:4px}
+.viz i{flex:1;border-radius:3px 3px 0 0;display:block}
+.chipline{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 2px}
+.chip{font-size:.72rem;padding:5px 10px;border-radius:999px;border:1px solid var(--grid);
+  color:var(--ink2);background:var(--raise);white-space:nowrap}
+.chip.up{color:var(--up);border-color:rgba(18,179,18,.32)}
+.chip.dn{color:var(--down);border-color:rgba(227,91,91,.32)}
+.chip.gd{color:var(--gold);border-color:var(--ring2)}
+.seal{display:flex;align-items:center;gap:10px;margin:12px 0 2px}
+.seal .ring{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold2);
+  display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.55rem;
+  font-weight:800;text-align:center;line-height:1.05;transform:rotate(-8deg);flex:none}
+.dials{margin:12px 0 2px}
+.dial{height:6px;border-radius:3px;background:var(--grid);position:relative;margin:11px 0}
+.dial i{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 12px rgba(245,196,69,.5)}
+
+.honest{background:var(--goldsoft);border:1px solid var(--ring);border-radius:18px;
+  padding:20px;margin-top:52px}
+.honest h2{font-size:1.1rem;margin-bottom:7px}
+.honest p{color:var(--ink2);font-size:.88rem;max-width:70ch}
+.company{margin-top:30px;border-top:1px solid var(--grid);padding-top:24px}
+.company h2{font-size:1.05rem;margin-bottom:6px}
+.company p{color:var(--ink2);max-width:70ch;font-size:.86rem}
+.endcta{text-align:center;margin:46px 0 10px}
+footer{margin:34px 0 30px;color:var(--muted);font-size:.72rem;text-align:center}
+footer a{color:var(--muted)}
+@media(max-width:520px){
+  html{font-size:16px}
+  .hero h1{font-size:2rem}
+  .stat .v{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <svg class="mk" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="g1" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#d99b0d"/><stop offset=".55" stop-color="#f5c445"/>
+      <stop offset="1" stop-color="#ffe79c"/></linearGradient></defs>
+    <rect width="512" height="512" rx="104" fill="#0a0a0a"/>
+    <rect x="4" y="4" width="504" height="504" rx="102" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="8"/>
+    <path d="M178 106.0 L232.0 200 L124.0 200 Z" fill="url(#g1)"/>
+    <path d="M330 167.7 L398.0 286 L262.0 286 Z" fill="url(#g1)"/>
+    <path d="M206 267.8 L282.0 400 L130.0 400 Z" fill="url(#g1)"/>
+    <path d="M338 365.5 L390.0 456 L286.0 456 Z" fill="url(#g1)"/>
+  </svg>
+  <div><div class="name">Touchstone</div><div class="by">by Zb International</div></div>
+  <div class="sp"></div>
+  <button class="langbtn" id="langBtn">ไทย</button>
+</header>
+
+<section class="hero">
+  <h1 data-t="h1">Learn to <b>read the market</b>.</h1>
+  <p class="say" data-t="say">Real gold prices. Live bots. Your own strategies. Nothing at risk, ever.</p>
+  <a class="cta" href="./" data-t="cta">Start free →</a>
+  <div class="sub" data-t="ctas">No sign-up · installs like an app · 5 languages</div>
+</section>
+
+<section class="live" id="live" hidden>
+  <div class="stat"><div class="k" data-t="l.gold">Gold now</div><div class="v" id="lvPrice">…</div><div class="s" id="lvAgo"></div></div>
+  <div class="stat"><div class="k" data-t="l.tot">Bots trading</div><div class="v" id="lvTot">…</div><div class="s" id="lvTotS"></div></div>
+  <div class="stat"><div class="k" data-t="l.day">Sealed record</div><div class="v" id="lvDay">…</div><div class="s" id="lvDayS"></div></div>
+  <div class="stat"><div class="k" data-t="l.news">News now</div><div class="v" id="lvLean">…</div><div class="s" id="lvLeanS"></div></div>
+</section>
+<div class="livehint" id="livehint" hidden data-t="l.hint">Live — the same data the app runs on, refreshed every half hour.</div>
+
+<section class="sec">
+  <div class="eyebrow" data-t="f.eye">What you learn</div>
+  <h2 data-t="f.h">Seven lessons the market usually charges for.</h2>
+  <div class="grid">
+
+    <div class="card"><div class="n">01</div>
+      <h3 data-t="f1.h">Read the conditions</h3>
+      <p data-t="f1.p">Session, volatility, trend, and what's scheduled next.</p>
+      <div class="chipline">
+        <span class="chip gd" data-t="f1.c1">London · busy</span>
+        <span class="chip up" data-t="f1.c2">Trend up</span>
+        <span class="chip dn" data-t="f1.c3">CPI in 3h</span>
+      </div></div>
+
+    <div class="card"><div class="n">02</div>
+      <h3 data-t="f2.h">Weigh the news</h3>
+      <p data-t="f2.p">Not good or bad — how much, and which way.</p>
+      <div class="chipline">
+        <span class="chip up">+0.52</span><span class="chip dn">−0.20</span>
+        <span class="chip up">+0.35</span><span class="chip gd" data-t="f2.c">= +0.41</span>
+      </div></div>
+
+    <div class="card"><div class="n">03</div>
+      <h3 data-t="f3.h">See what survives</h3>
+      <p data-t="f3.p">A year of real prices replayed in seconds, at any setting.</p>
+      <div class="dials">
+        <div class="dial"><i style="left:22%"></i></div>
+        <div class="dial"><i style="left:63%"></i></div>
+      </div></div>
+
+    <div class="card"><div class="n">04</div>
+      <h3 data-t="f4.h">Skill, or luck?</h3>
+      <p data-t="f4.p">Your trades reshuffled into a thousand alternative years.</p>
+      <div class="viz" id="vizMC"></div></div>
+
+    <div class="card"><div class="n">05</div>
+      <h3 data-t="f5.h">Learn by doing</h3>
+      <p data-t="f5.p">Build a bot, pin it to the Desk with its own $10,000.</p>
+      <div class="viz">
+        <svg viewBox="0 0 200 44" preserveAspectRatio="none" style="width:100%;height:44px">
+          <path d="M0 34 L28 30 L56 36 L84 22 L112 26 L140 14 L168 18 L200 8" fill="none"
+                stroke="var(--blue)" stroke-width="2.4"/>
+          <path d="M0 38 L28 36 L56 30 L84 32 L112 20 L140 24 L168 12 L200 14" fill="none"
+                stroke="var(--gold)" stroke-width="2.4" stroke-dasharray="5 4"/>
+        </svg></div></div>
+
+    <div class="card"><div class="n">06</div>
+      <h3 data-t="f6.h">Read economic data</h3>
+      <p data-t="f6.p">What each release actually did to gold, 4h and a day later.</p>
+      <div class="chipline">
+        <span class="chip up" data-t="f6.c1">CPI beat → +0.8%</span>
+        <span class="chip dn" data-t="f6.c2">Jobs strong → −0.5%</span>
+      </div></div>
+
+    <div class="card"><div class="n">07</div>
+      <h3 data-t="f7.h">Proof, not promises</h3>
+      <p data-t="f7.p">Every result sealed to the Bitcoin blockchain. Nobody can edit it — not even us.</p>
+      <div class="seal"><div class="ring">BTC<br>SEALED</div>
+        <span class="chip gd" id="lvHash">—</span></div></div>
+
+    <div class="card" style="border-color:var(--ring2)"><div class="n">→</div>
+      <h3 data-t="f8.h">And it's free</h3>
+      <p data-t="f8.p">No sign-up, no account, no cost. Open it and start.</p>
+      <div class="chipline"><a class="chip gd" href="./" style="text-decoration:none" data-t="f8.c">Open Touchstone →</a></div></div>
+
+  </div>
+</section>
+
+<section class="honest">
+  <h2 data-t="h.h">Honest by design</h2>
+  <p data-t="h.p">Educational only, played with imaginary money. Nothing here is investment advice, no real order is ever placed, and past results — ours or yours — never promise future ones. We would rather show you a losing month truthfully than a winning one dressed up.</p>
+</section>
+
+<section class="company">
+  <h2 data-t="c.h">Built by engineers, moving with the future</h2>
+  <p data-t="c.p">Zb International is an engineering company — raised in the big, material world of steel and structure, now stepping into the quantum world of possibilities that artificial intelligence has opened. We believe that world is tomorrow's mainstream, so we are adapting, and moving ahead. Touchstone is our first step there: engineering discipline, turned into a way to learn a market. Go with the flow.</p>
+</section>
+
+<div class="endcta"><a class="cta" href="./" data-t="cta2">Start learning — free →</a></div>
+
+<footer>
+  <div><a href="mailto:info@zb-international.com">info@zb-international.com</a></div>
+  <div style="margin-top:6px" data-t="ft">© 2026 Zb International Co., Ltd. (Thailand). All rights reserved.</div>
+</footer>
+
+</div>
+<script>
+/* ---- EN / TH toggle — shares the app's language key ---------------------- */
+const TH = {
+ "h1": "เรียนรู้ที่จะ<b>อ่านตลาด</b>",
+ "say": "ราคาทองจริง บอทที่เทรดสด กลยุทธ์ของคุณเอง โดยไม่มีอะไรต้องเสี่ยง",
+ "cta": "เริ่มฟรี →", "cta2": "เริ่มเรียนรู้ — ฟรี →",
+ "ctas": "ไม่ต้องสมัคร · ติดตั้งเหมือนแอป · 5 ภาษา",
+ "l.gold": "ทองตอนนี้", "l.tot": "บอทที่เทรดอยู่", "l.day": "สถิติที่ผนึกไว้", "l.news": "ข่าวตอนนี้",
+ "l.hint": "ข้อมูลสด — ชุดเดียวกับที่แอปใช้ อัปเดตทุกครึ่งชั่วโมง",
+ "f.eye": "สิ่งที่คุณจะได้เรียนรู้",
+ "f.h": "เจ็ดบทเรียนที่ปกติตลาดเก็บค่าเล่าเรียน",
+ "f1.h": "อ่านสภาพตลาด", "f1.p": "เซสชัน ความผันผวน เทรนด์ และอะไรกำลังจะมา",
+ "f1.c1": "ลอนดอน · คึกคัก", "f1.c2": "เทรนด์ขึ้น", "f1.c3": "CPI ใน 3 ชม.",
+ "f2.h": "ชั่งน้ำหนักข่าว", "f2.p": "ไม่ใช่ดีหรือร้าย — แต่มากแค่ไหน และไปทางไหน", "f2.c": "= +0.41",
+ "f3.h": "ดูว่าอะไรอยู่รอด", "f3.p": "รีเพลย์ราคาจริงทั้งปีในไม่กี่วินาที ที่ค่าไหนก็ได้",
+ "f4.h": "ฝีมือ หรือโชค?", "f4.p": "สลับไม้ของคุณเป็นหนึ่งพันปีทางเลือก",
+ "f5.h": "เรียนจากการลงมือทำ", "f5.p": "สร้างบอท ปักบนโต๊ะเทรดพร้อมเงิน $10,000 ของมันเอง",
+ "f6.h": "อ่านข้อมูลเศรษฐกิจ", "f6.p": "ตัวเลขแต่ละครั้งทำอะไรกับทองจริง ๆ ที่ 4 ชม. และ 1 วันถัดมา",
+ "f6.c1": "CPI สูงกว่าคาด → +0.8%", "f6.c2": "จ้างงานแกร่ง → −0.5%",
+ "f7.h": "หลักฐาน ไม่ใช่คำสัญญา", "f7.p": "ทุกผลลัพธ์ผนึกกับบล็อกเชนบิตคอยน์ ไม่มีใครแก้ได้ — แม้แต่เรา",
+ "f8.h": "และมันฟรี", "f8.p": "ไม่ต้องสมัคร ไม่ต้องมีบัญชี ไม่มีค่าใช้จ่าย เปิดแล้วเริ่มได้เลย",
+ "f8.c": "เปิด Touchstone →",
+ "h.h": "ซื่อสัตย์โดยการออกแบบ",
+ "h.p": "เพื่อการศึกษาเท่านั้น เล่นด้วยเงินสมมติ ไม่มีอะไรที่นี่เป็นคำแนะนำการลงทุน ไม่มีคำสั่งซื้อจริงเด็ดขาด และผลในอดีต — ของเราหรือของคุณ — ไม่เคยรับประกันอนาคต เรายอมแสดงเดือนที่ขาดทุนตามความจริง ดีกว่าแต่งเดือนที่กำไรให้ดูดี",
+ "c.h": "สร้างโดยวิศวกร ก้าวไปกับอนาคต",
+ "c.p": "Zb International คือบริษัทวิศวกรรม — เติบโตจากโลกวัตถุอันยิ่งใหญ่ของเหล็กและโครงสร้าง และวันนี้กำลังก้าวเข้าสู่โลกควอนตัมแห่งความเป็นไปได้ที่ปัญญาประดิษฐ์เปิดให้ เราเชื่อว่านั่นคือกระแสหลักของวันพรุ่งนี้ เราจึงปรับตัวและเดินไปข้างหน้า Touchstone คือก้าวแรกของเรา: วินัยแบบวิศวกรรม นำมาใช้กับการเรียนรู้ตลาด Go with the flow",
+ "ft": "© 2026 Zb International Co., Ltd. (ประเทศไทย) สงวนลิขสิทธิ์",
+};
+const EN = {};
+document.querySelectorAll("[data-t]").forEach(el => EN[el.dataset.t] = el.innerHTML);
+let lang = (localStorage.getItem("touchstone-lang") === "th") ? "th" : "en";
+function apply() {
+  const P = lang === "th" ? TH : EN;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    if (P[el.dataset.t]) el.innerHTML = P[el.dataset.t];
+  });
+  document.documentElement.lang = lang;
+  document.getElementById("langBtn").textContent = lang === "th" ? "English" : "ไทย";
+}
+document.getElementById("langBtn").onclick = () => {
+  lang = lang === "th" ? "en" : "th";
+  try { localStorage.setItem("touchstone-lang", lang); } catch (e) {}
+  apply(); fill();
+};
+
+/* the luck-test bars: the SHAPE of a thousand outcomes — illustrative, and
+   labelled as the idea it is, never as a measured result */
+(() => {
+  const box = document.getElementById("vizMC");
+  [18, 34, 55, 78, 96, 100, 88, 66, 42, 24, 12].forEach((v, i) => {
+    const b = document.createElement("i");
+    b.style.height = v + "%";
+    b.style.background = Math.abs(i - 5) <= 1 ? "var(--gold)" : "rgba(245,196,69,.22)";
+    box.appendChild(b);
+  });
+})();
+
+/* ---- the live strip: the app's own data file, nothing invented ----------- */
+let DESK = null;
+const parseT = s => { const d = new Date(s); return isNaN(d) ? null : d.getTime(); };
+function fill() {
+  if (!DESK) return;
+  const $ = id => document.getElementById(id);
+  const th = lang === "th";
+  if (DESK.price) {
+    $("lvPrice").textContent = "$" + Number(DESK.price).toLocaleString("en-US",
+      {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const t = parseT(DESK.stepped || DESK.built);
+    if (t) { const m = Math.max(1, Math.round((Date.now() - t) / 60000));
+      $("lvAgo").innerHTML = '<span class="dot"></span>' + (th ? `${m} นาทีที่แล้ว` : `${m}m ago`); }
+  }
+  const bots = DESK.bots || [];
+  if (bots.length) {
+    const tot = bots.reduce((a, b) => a + (b.equity || 0), 0);
+    const diff = bots.reduce((a, b) => a + (b.diff || 0), 0);
+    $("lvTot").textContent = "$" + Math.round(tot).toLocaleString();
+    $("lvTotS").innerHTML = (th ? `${bots.length} บอท · ` : `${bots.length} bots · `) +
+      `<span style="color:${diff >= 0 ? "var(--up)" : "var(--down)"}">` +
+      (diff >= 0 ? "+" : "−") + "$" + Math.abs(Math.round(diff)).toLocaleString() + "</span>";
+  }
+  if (DESK.era_start) {
+    const day = Math.max(1, Math.floor((Date.now() - parseT(DESK.era_start)) / 86400000) + 1);
+    $("lvDay").textContent = th ? `วันที่ ${day}` : `day ${day}`;
+    $("lvDayS").textContent = th ? "ผนึกบนบิตคอยน์ทุกวัน" : "Bitcoin-sealed daily";
+  }
+  const n = DESK.news || {};
+  if (n.lean != null) {
+    const v = Number(n.lean), el = $("lvLean");
+    el.textContent = (v > 0 ? "+" : "") + v.toFixed(2);
+    el.style.color = v > 0.05 ? "var(--up)" : v < -0.05 ? "var(--down)" : "var(--ink)";
+    $("lvLeanS").textContent = th ? `จาก ${n.matched ?? 0} ข่าวที่ให้คะแนน`
+                                  : `${n.matched ?? 0} headlines scored`;
+  }
+  const r = DESK.record || {};
+  if (r.head) $("lvHash").textContent = r.head.slice(0, 12) + "…";
+  $("live").hidden = false;
+  $("livehint").hidden = false;
+}
+apply();
+fetch("data/desk.json?t=" + Math.floor(Date.now() / 600000))
+  .then(r => r.json()).then(j => { DESK = j; fill(); })
+  .catch(() => {});
+</script>
+</body>
+</html>

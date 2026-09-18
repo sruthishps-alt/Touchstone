@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0a08">
+<title>Touchstone — White Paper</title>
+<script>
+/* Decide day or night BEFORE the first paint. Doing this further down the page
+   would flash the wrong colour on every open, which on a white page in a dark
+   room is not a small thing. The settings are the app's own keys, so whatever
+   was chosen there is what appears here. */
+(function () {
+  var m = "dark", z = "md";
+  try {
+    m = localStorage.getItem("touchstone-theme") || "dark";
+    z = localStorage.getItem("touchstone-textsize") || "md";
+  } catch (e) {}                       /* private mode can refuse storage */
+  var t = m === "auto"
+    ? (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
+    : (m === "light" ? "light" : "dark");
+  document.documentElement.setAttribute("data-theme", t);
+  document.documentElement.setAttribute("data-text", z);
+})();
+</script>
+<style>
+/* The paper, for a screen rather than a printer. Same palette as the app so
+   it does not feel like being thrown out of it — and, more importantly, its
+   own back bar. The PDF opens in a viewer this project does not control,
+   which on an installed app means no visible way home. This page has one. */
+/* Both palettes are the app's own, token for token, so the paper never looks
+   like a different product. Which one is used comes from the same setting the
+   app uses — a reader who chose Day does not want to be thrown into night
+   halfway through a long document. */
+:root, :root[data-theme="dark"]{
+  color-scheme:dark;
+  --plane:#0b0a08;--surface:#14130f;--ink:#f8f6f0;--ink2:#b9b4a5;
+  --muted:#8a8578;--gold:#f5c445;--ring:rgba(245,196,69,.15);
+  --ring2:rgba(245,196,69,.36);--goldsoft:rgba(245,196,69,.10);--grid:#26231a;
+  --riskb:rgba(224,85,85,.45);--riskbg:rgba(224,85,85,.05);
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --serif:ui-serif,"New York",Georgia,serif}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --plane:#f6f4ed;--surface:#fffdf7;--ink:#15130d;--ink2:#4f4b3f;
+  /* one deliberate departure from the app's palette: its muted grey is a
+     dashboard label colour and lands at 3.7:1 on this paper, under the 4.5:1
+     a reader is owed for continuous text. Darkened to 5.3:1. */
+  --muted:#6b6455;--gold:#a97400;--ring:rgba(21,19,13,.12);
+  --ring2:rgba(169,116,0,.45);--goldsoft:rgba(169,116,0,.09);--grid:#e7e3d6;
+  --riskb:rgba(176,58,46,.42);--riskbg:rgba(176,58,46,.05)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+/* the app's three reading sizes, same values, so the choice carries over */
+html{background:var(--plane);overflow-x:clip;-webkit-text-size-adjust:100%;font-size:19.5px}
+html[data-text="sm"]{font-size:17.5px}
+html[data-text="lg"]{font-size:22px}
+body{font-family:var(--ui);background:var(--plane);color:var(--ink2);
+  line-height:1.7;-webkit-font-smoothing:antialiased}
+.bar{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:10px;
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+  background:color-mix(in srgb,var(--plane) 94%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--ring)}
+.bar button{display:flex;align-items:center;gap:7px;background:none;border:0;
+  color:var(--gold);font:600 0.8rem var(--ui);cursor:pointer;padding:6px 2px}
+.bar svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.bar .t{margin-left:auto;font:600 0.72rem var(--ui);color:var(--muted)}
+.bar #theme{padding:6px 0 6px 6px}
+.wrap{max-width:660px;margin:0 auto;padding:20px 16px calc(40px + env(safe-area-inset-bottom))}
+/* The cover mark. The printed edition opens on it; this page was built from
+   the source *after* the cover, so it arrived without one. */
+.mark{width:78px;height:78px;display:block;margin:4px 0 20px;border-radius:16px;
+  box-shadow:0 8px 26px rgba(0,0,0,.5)}
+.endmark{width:34px;height:34px;display:block;margin:28px auto 0;
+  border-radius:7px;opacity:.65}
+h1{font-family:var(--serif);font-size:1.75rem;font-weight:600;color:var(--ink);
+  line-height:1.15;margin-bottom:6px}
+.sub{font-style:italic;color:var(--gold);font-size:0.86rem;margin-bottom:6px}
+.meta{font-size:0.7rem;color:var(--muted);line-height:1.75;
+  border-bottom:1px solid var(--grid);padding-bottom:18px;margin-bottom:8px}
+h2{font-size:1.05rem;font-weight:700;color:var(--ink);margin:30px 0 8px;line-height:1.3}
+h2 .n{color:var(--gold);font-weight:400;margin-right:9px}
+h3{font-size:0.86rem;font-weight:700;color:var(--ink);margin:20px 0 5px}
+p{margin-bottom:11px;font-size:0.845rem}
+p.lead{font-size:0.9rem;color:var(--ink)}
+b,strong{color:var(--ink);font-weight:650}
+ul{margin:0 0 12px 18px}li{margin-bottom:6px;font-size:0.845rem}
+.small{font-size:0.74rem;color:var(--muted)}
+.pull{border-left:2px solid var(--gold);padding:4px 0 4px 14px;margin:18px 0;
+  font-style:italic;color:var(--ink);font-size:0.9rem}
+.box{border:1px solid var(--ring);background:var(--surface);border-radius:12px;
+  padding:14px 16px;margin:18px 0}
+.box h3{margin-top:0}
+.box.warn{border-color:var(--ring2)}
+.box.risk{border-color:var(--riskb);background:var(--riskbg)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.8rem}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--grid);vertical-align:top}
+th{font-size:0.66rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+td:first-child{font-weight:650;color:var(--ink);width:36%}
+.toc{font-size:0.82rem;margin-bottom:6px}
+.toc div{padding:7px 0;border-bottom:1px solid var(--grid)}
+.toc span{color:var(--gold);display:inline-block;width:26px}
+.dl{display:block;text-align:center;border:1px solid var(--ring2);
+  background:var(--goldsoft);border-radius:12px;padding:13px;margin:26px 0 8px;
+  color:var(--gold);font-weight:700;text-decoration:none;font-size:0.85rem}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Touchstone</button>
+  <span class="t">White paper</span>
+  <button id="theme" aria-label="Switch to day"><svg id="themeIcon" viewBox="0 0 24 24"></svg></button>
+</div>
+<div class="wrap">
+  <svg class="mark" viewBox="0 0 512 512" role="img" aria-label="Touchstone"><rect width="512" height="512" rx="104" fill="#0a0a0a"/><rect x="4" y="4" width="504" height="504" rx="102" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="8"/><path d="M178 106.0 L232.0 200 L124.0 200 Z" fill="#f5c445"/><path d="M330 167.7 L398.0 286 L262.0 286 Z" fill="#f5c445"/><path d="M206 267.8 L282.0 400 L130.0 400 Z" fill="#f5c445"/><path d="M338 365.5 L390.0 456 L286.0 456 Z" fill="#f5c445"/></svg>
+  <h1>Touchstone</h1>
+  <div class="sub">A stone you rub gold against to find out whether it is real.<br>
+    An honest place to test whether a trading idea is.</div>
+  <div class="meta">Version 1.2 · August 2026 · Zb International Co., Ltd.<br>
+    24/29 Moo 8, Sao Thong Hin Subdistrict, Bang Yai District, Nonthaburi 11140, Thailand<br>
+    Registration 0125567021983 · info@zb-international.com</div>
+
+<h2>Contents</h2>
+<div class="toc">
+  <div><span>1</span>Summary</div>
+  <div><span>2</span>Why this exists — three accounts, and what each one cost</div>
+  <div><span>3</span>The problem: too many forces, one pair of eyes</div>
+  <div><span>4</span>What Touchstone is</div>
+  <div><span>5</span>How it is built</div>
+  <div><span>6</span>The reading layers — news, data, positioning, conditions</div>
+  <div><span>7</span>The Lab — testing an idea without paying for the lesson</div>
+  <div><span>8</span>The honesty machinery</div>
+  <div><span>9</span>The Journal — your own record, measured the same way</div>
+  <div><span>10</span>The paths you did not take</div>
+  <div><span>11</span>What Touchstone is not</div>
+  <div><span>12</span>Privacy, and what leaves your phone</div>
+  <div><span>13</span>Risk statement</div>
+  <div><span>14</span>Roadmap and how it will be decided</div>
+</div>
+
+
+<h2><span class="n">1</span>Summary</h2>
+
+<p class="lead">Touchstone is an educational simulation tool for people who trade gold and other
+volatile instruments in their own time. It does three things. It gathers what is moving the
+market right now — news, released economic data, large-fund positioning, and the state of the
+chart — and scores it in one place. It runs a set of trading bots on imaginary money, in public,
+and publishes their results whether they are good or bad. And it gives the reader a laboratory in
+which to test their own rules against a real year of prices, with the specific tests that reveal
+whether a good result was skill or luck.</p>
+
+<p>It is built on an unusual premise for this industry: <b>that the most valuable thing a trading
+tool can tell you is that your idea does not work.</b> Most of the software in this space is
+designed to make a strategy look good. Touchstone is designed to find out. The difference shows
+up in what it measures — not just what a strategy returned, but whether it survives a different
+run of luck, a broker's costs, a change of market conditions, and, above all, the honest test of
+being judged on data that did not exist when it was tuned.</p>
+
+<p>Underneath all of it sits one idea. A real account only ever shows you the path you took.
+Touchstone lets you run the ones you did not — backwards over a year that has happened, and
+forwards alongside the money you are actually trading, so that in three months the question
+"should I have done it differently?" has an answer instead of an opinion.</p>
+
+<p>No real order is ever placed. No real money is ever handled. Nothing the user types leaves
+their device.</p>
+
+
+<h2><span class="n">2</span>Why this exists — three accounts, and what each one cost</h2>
+
+<p>I trade in my free time. I am not an institution and I do not manage anyone's money. What
+follows is my own history, and I include it because the app came directly out of it.</p>
+
+<p><b>This is not a success story.</b> Every account below ended at zero. I am setting them down
+because each one failed for a different reason, and the reasons turned out to matter more than
+the returns.</p>
+
+<h3>The first: $50 to $1,500 in three months</h3>
+<p>Then the US election result arrived and it was gone. I had no framework for what a scheduled
+political event does to a leveraged position. I was not wrong about the market; I simply had not
+considered that a date on a calendar could end an account.</p>
+
+<h3>The second: $450 to $4,700 in six months</h3>
+<p>This one still makes me laugh, and it is the reason Touchstone exists at all. I was learning
+to backtest, using MetaTrader's EA editor. Some toggles were set in a way I did not understand,
+and the test ran against the live chart rather than history. The account was wiped out — not by a
+bad trade, not by the market, but by <em>trying to learn whether my idea was any good</em>.</p>
+
+<div class="pull">Learning to test a strategy should not cost you your account. That sentence is
+the entire product.</div>
+
+<h3>The third: $1,700 to $12,000 in six months</h3>
+<p>Better strategies this time, built after sitting down and honestly cataloguing what had gone
+wrong before. And then a small piece of ego: one position was still red, and instead of taking
+the roughly $17,000 that was available to me, I waited for it to turn green. Silver fell 42%.
+The account went with it.</p>
+
+<p>That loss was not a market failure. The market did what markets do — a strong intentional move
+against crowded positioning, and profit-taking on top. The failure was that I wanted to be right
+more than I wanted to be paid, and I had no record in front of me arguing otherwise.</p>
+
+<h3>What the three have in common</h3>
+<p>Not one of them was a strategy problem. The first was an event I had not planned for. The
+second was a tool that punished me for trying to learn. The third was ego, unopposed by evidence.</p>
+
+<p>Somewhere in that sequence I stopped believing that trading rewards cleverness, and started
+believing it rewards three duller things: <b>discipline, resilience, and endurance</b>. Discipline
+to follow the rule you set when you were calm. Resilience to look honestly at the wreckage and
+name what actually happened. Endurance to keep measuring long after the excitement has gone.</p>
+
+<p>Touchstone is an attempt to build a tool for those three qualities rather than for the
+cleverness. One of the five bots in it is called Endurance, and that is not decoration.</p>
+
+
+<h2><span class="n">3</span>The problem: too many forces, one pair of eyes</h2>
+
+<p>A part-time trader in gold, silver, an index or a crypto pair is standing in the path of forces
+that do not care about them and do not arrive politely one at a time:</p>
+
+<ul>
+  <li><b>Scheduled economic data</b> — inflation, employment, growth — where what matters is not
+    the number but the gap between the number and what was expected.</li>
+  <li><b>Central bank policy and buying</b>, which for gold in particular has been a dominant and
+    under-watched force.</li>
+  <li><b>Geopolitical tension and war</b>, which move safe havens on no schedule at all.</li>
+  <li><b>Political noise</b>, including a single social-media post from a head of state.</li>
+  <li><b>High-frequency and algorithmic flow</b>, operating at speeds no human competes with.</li>
+  <li><b>Liquidity grabs</b> — moves engineered to trigger the stops of people positioned exactly
+    where you are positioned.</li>
+  <li><b>Macro cross-currents</b> — the dollar, real yields, oil — each pulling on the others.</li>
+</ul>
+
+<p>Any one of these is followable. All of them, continuously, while holding a job, is not. The
+honest experience of the part-time trader is not "I lack information" — it is
+<b>"there is too much of it, arriving from too many places, and I cannot tell which of it
+mattered."</b></p>
+
+<p>And underneath that sits the harder problem. Even with perfect information, you still do not
+know whether your own method works, because you have never measured it in a way that could have
+told you it does not.</p>
+
+
+<h2><span class="n">4</span>What Touchstone is</h2>
+
+<p>Touchstone is a mobile web application with four screens.</p>
+
+<table>
+  <tr><td>Desk</td><td>Five paper-trading bots, each with an imaginary $10,000, updated every
+    half hour. What each holds, what it has made or lost, and a plain-language description of what
+    gold is currently doing — trend, volatility, position within its 20-day range, momentum,
+    which session is active, and what is scheduled next.</td></tr>
+  <tr><td>News</td><td>The readings that feed the bots' score: headlines that moved the market and
+    by how much, economic figures released and scored against forecast, and where large funds and
+    gold ETFs are positioned.</td></tr>
+  <tr><td>Bot&nbsp;Lab</td><td>A full year of real half-hour prices, replayed on the reader's own
+    device. Move a slider and the entire year recomputes. Save a configuration and it begins
+    keeping a forward record.</td></tr>
+  <tr><td>Journal</td><td>The reader's own trades, entered by hand and measured with exactly the
+    same statistics as the bots — including a direct comparison against a mechanical rule over the
+    same days.</td></tr>
+</table>
+
+<p>It is available in English, Thai, Hindi, Chinese and Vietnamese, works offline once opened, and
+installs to a phone's home screen without an app store.</p>
+
+
+<h2><span class="n">5</span>How it is built</h2>
+
+<p>An automated job runs every thirty minutes. It fetches a real gold price, advances every bot by
+one step, scores the news, scores any economic data released that morning, checks large-fund
+positioning, and writes down what happened. Nothing is retroactive: what a bot knew at 9:30 is
+what it knew, and the record of it cannot be edited afterwards.</p>
+
+<p>The trading engine, the strategy code and the full history live in a private repository. What
+is published is display output only — the numbers, the price archive, and a single page. This
+separation is deliberate and does two things: it keeps the exact rules and weights private — the reasoning is described in section 6, the
+arithmetic is not — and it means the public face cannot accidentally leak the machinery behind it.</p>
+
+<h3>Deterministic replay</h3>
+<p>The replay engine in the reader's browser reproduces the original engine's year-long run
+<b>to the cent</b> before any control in the Lab is trusted. This is verified after every change.
+It is what makes an unusual feature possible: because the same settings over the same candles
+always produce the same trades, a saved bot's forward record can be recomputed from scratch on
+the device, from the moment it was saved. Nothing needs to be stored, and nothing can be quietly
+revised. The record is derived, not remembered.</p>
+
+<div class="box">
+  <h3>The archive</h3>
+  <p class="small" style="margin:0">18,312 half-hour candles of spot gold, covering 29 July 2025
+  to the present day. Every backtest, every luck test and every forward record in the application
+  is computed from this one archive, on the reader's own device. No calculation is sent to a
+  server, because there is no server.</p>
+</div>
+
+
+<h2><span class="n">6</span>The reading layers — news, data, positioning, conditions</h2>
+
+<p>Four independent readings are taken every cycle and combined into a single score that the bots
+trade with. Each is deliberately bounded, so that no one layer can dominate the others.</p>
+
+<h3>News</h3>
+<p>Headlines from the last two hours are read and scored against vocabularies of gold-positive and
+gold-negative language, weighted by how recently each arrived. The strongest few are shown to the
+reader with their individual scores, most gold-positive first — so a reading built on one loud
+story is visibly different from one built on three that agree, and anything pulling the other way
+is visible rather than averaged away.</p>
+
+<p>The vocabulary is a written list rather than a judgement: each phrase carries a fixed weight,
+positive or negative, and a headline's reading is the sum of whatever phrases it contains.
+Headlines naming the central bank, inflation or the jobs report are amplified, because those move
+gold hardest. Nothing is inferred and nothing is learned — the same headline always produces the
+same number, today and in five years.</p>
+
+<p><b>The weakness of this is worth stating plainly.</b> Matching phrases is not reading English.
+A headline saying "no rate cut coming" contains the phrase "rate cut", and is scored as though a
+cut had been announced. That is the honest limit of the method. It is why news is the smallest of
+the three votes, and it is the reason the economic-data layer was built at all: a released number
+cannot be misread that way.</p>
+
+<h3>Economic data</h3>
+<p>Eighteen United States series — inflation, wages, employment, claims, retail sales, growth —
+are taken from the Federal Reserve's own database and compared against what forecasters expected.
+The <em>surprise</em> is what is scored, not the number: a rise in inflation that everyone
+predicted is not news, and a small one that nobody did can be.</p>
+
+<p>Which way a surprise points is fixed by category rather than decided case by case. Hotter
+inflation and stronger growth weigh on gold, because both keep interest rates high and gold pays
+no interest. More slack — rising unemployment claims, a higher jobless rate — helps it, because
+that is what brings rates back down.</p>
+
+<p>Each figure's push is scaled by how large the surprise is against thresholds set per series,
+then faded by age — full weight for four hours, half weight to twelve, nothing after that. A
+single release can move the score by at most 0.6; the dollar-and-yield backdrop by at most 0.2;
+the total is capped at 0.8. These caps exist so that one dramatic morning cannot own the score.</p>
+
+<p>Every released figure is shown to the reader in plain language: what came out, what was
+expected, and which way that points for gold.</p>
+
+<h3>Positioning — where the large money is</h3>
+<p>Two public sources: the US futures regulator's weekly report of how large speculators are
+positioned, and the daily holdings of the world's largest gold ETF. Read together they answer a
+question a chart cannot: is the money that moves this market currently leaning in or leaning out?
+Real yields, the dollar index and oil are read alongside as a macro backdrop.</p>
+
+<p>Fund positioning is read as a position <em>within its own multi-year range</em> rather than as
+an absolute number, because "a large number of contracts" means nothing without knowing what large
+is for this market. Near the top of that range the trade is crowded — and crowding is treated as a
+<b>warning rather than an endorsement</b>: everyone who wanted in is already in, so there is
+little money left to push it further. Near the bottom there is room to buy. Funds adding, or
+cutting, for several weeks running counts separately, as evidence that a move has real backing
+rather than one week's noise.</p>
+
+<p>The ETF is read week on week, with one extra check worth naming: holdings falling while the
+price rises is a rally nobody is funding, and is marked down for it.</p>
+
+<p>Two further rules exist to stop this layer being confidently wrong. A regulator's report older
+than a fortnight has its vote halved, because a stale snapshot is a guess wearing a number. And
+when oil spikes while the dollar is <em>also</em> rising — the shape a geopolitical shock usually
+takes — the layer declares a <b>crosswind</b> and stands down rather than choosing a side. "War is
+good for gold" is a slogan. A frightened world buys dollars too, and gold priced in dollars then
+has a bid and a headwind at the same moment; the 2022 invasion weeks are the plain example, gold
+jumping and then giving most of it back while the dollar climbed.</p>
+
+<h3>Conditions</h3>
+<p>Finally, a description of the market itself: whether price sits above or below its long-term
+average and by how much, whether volatility is high or calm against its own three-month median,
+where price sits within its 20-day range, momentum over the week and the month, which trading
+session is open, and what is scheduled next.</p>
+
+<h3>How the readings become one number</h3>
+<p>News and economic data are added together, each bounded before the addition and the sum bounded
+after it. Words and numbers agreeing therefore push harder than either alone; words and numbers
+disagreeing partly cancel, which is the correct outcome — a market being told two things is a
+market with less of a lean, not more.</p>
+
+<p>Positioning is deliberately kept out of that sum. The regulator's report is a Tuesday snapshot
+published on a Friday, so it is at least three days old by the time anyone reads it: old enough
+that it must never be allowed to open a trade. It does two quieter things instead. It adjusts how
+large a position is — roughly half to one and a half times the ordinary size — and it can refuse a
+trade outright when it sits strongly on the other side. A slow signal is permitted to size, and
+permitted to veto. It is not permitted to trigger.</p>
+
+<p>The market conditions are not scored at all. They are shown, and they are recorded against
+every trade the bots take, so that the question "when does this work?" can be answered later from
+the record instead of from memory.</p>
+
+<div class="box warn">
+  <h3>An honest note on how this scoring was built</h3>
+  <p class="small" style="margin:0">These rules were designed and refined with the assistance of
+  AI tools, and they are worth describing accurately. They are <b>not</b> a machine-learning model
+  and they do not learn from their own results. They are explicit, deterministic, weighted rules —
+  each source given a gravity according to its historical importance and its freshness, each
+  bounded so it cannot dominate, and all of them written down. That is a weaker claim than
+  "AI-powered", and a more useful one: a rule you can read is a rule you can argue with, and one
+  whose failures you can find. Whether this scoring predicts anything at all is an open question,
+  which is exactly why the application keeps a public report card on it.</p>
+</div>
+
+<div class="box">
+  <h3>What is published here, and what is not</h3>
+  <p class="small" style="margin:0">The method is described above in full. The individual weights,
+  the per-series thresholds, and the rules of the bots not offered in the Lab are not published.
+  That is a boundary worth explaining rather than leaving to be guessed at. It is not secrecy
+  about the reasoning: the application already shows every headline with its own reading, every
+  released figure with its own push, and which positioning rule fired — several times an hour, to
+  anyone who opens it. What is withheld is the arithmetic, not the argument. And the part of this
+  project that would be hardest for anyone to copy is not arithmetic at all. It is a measured
+  record, and a record cannot be started in the past.</p>
+</div>
+
+
+<h2><span class="n">7</span>The Lab — testing an idea without paying for the lesson</h2>
+
+<p>This is the part of Touchstone that exists because of the second account.</p>
+
+<p>The Lab holds two strategy archetypes, each fully adjustable. <b>Scout</b> trades the rubber
+band: when price stretches away from its short-term average and starts snapping back, it takes the
+snap. <b>Blend</b> follows the flow: when a fast average crosses a slow one and price clears a
+recent high or low, it goes with the move and lets winners run.</p>
+
+<p>Every control is a slider, and moving one recomputes the entire year in under a second on the
+device. Risk per trade, stop width, patience, profit target, whether to trade only with the
+longer trend — and, behind a fold, the numbers that used to be welded into the strategy: how far
+back the average looks, how far price must stretch before acting, when the stop moves to
+breakeven, how tightly the trail follows.</p>
+
+<p>They are called reference bots for a reason. <b>They are not the product; they are the control
+group.</b> Their purpose is to be a yardstick a reader's own thinking can be measured against, and
+a worked example of what testing a rule honestly looks like.</p>
+
+<div class="pull">Nothing in the Lab can lose money. That is the whole point of the second
+account's story: the place where you find out whether an idea works should not be the place where
+you find out what it costs.</div>
+
+
+<h2><span class="n">8</span>The honesty machinery</h2>
+
+<p>Any tool can show a backtest. What distinguishes Touchstone is the set of questions it asks
+after the backtest, each of which exists to catch a specific way that a good-looking result lies.</p>
+
+<table>
+  <tr><td>The luck test</td><td>Re-runs the entire year at every value of every slider. A
+    <em>plateau</em> means the idea survives a range of settings and the exact number does not
+    matter much. A lonely <em>spike</em> means a fluke was found. It reports how many settings were
+    profitable and whether the current one sits one step away from a cliff.</td></tr>
+  <tr><td>A thousand alternative years</td><td>Re-draws the same kinds of trade at random, with
+    replacement, a thousand times. This answers "could this year have lost money?" — which merely
+    reordering the trades cannot, because reordering cannot change a total. It reports the typical
+    worst drawdown, the unlucky one, and the share of alternative years that still made money.</td></tr>
+  <tr><td>Condition slices</td><td>Groups every trade by what the market was doing when it opened —
+    trend, volatility, session. A strategy that only earns in one regime is leaning entirely on that regime,
+    not an edge.</td></tr>
+  <tr><td>Over time</td><td>A rolling three-month result and four equal quarters. One yearly total
+    can hide a strategy that died in March.</td></tr>
+  <tr><td>Broker realism</td><td>Spread, slippage and commission per ounce, plus overnight
+    financing at the correct rate — charged only on nights actually held, with no weekend charge
+    and the correct triple charge on the day the settlement date jumps the weekend.</td></tr>
+  <tr><td>The honesty split</td><td>The year cut in two. If the halves disagree, the setting is
+    probably luck rather than skill.</td></tr>
+  <tr><td>Forward records</td><td>The one that matters most. From the day a bot is saved, it is
+    replayed over every new candle since — the same test as a backtest, except it could not have
+    been tuned to fit. Backtests flatter. Forward records tell the truth.</td></tr>
+</table>
+
+<p>That last row deserves emphasis, because it is the answer to the deepest problem in this field.
+A backtest is a result computed on data that already existed when the settings were chosen. It is
+always, structurally, a description of a search rather than a discovery. A forward record cannot
+be. In this project's own testing, a configuration showing <b>+78% on a backtest produced a loss
+over the same period measured forward.</b> That gap is the single most important number the
+application can show anyone, and it is shown by default.</p>
+
+
+<h2><span class="n">9</span>The Journal — your own record, measured the same way</h2>
+
+<p>The bots are the control group. The reader's own trading is the experiment.</p>
+
+<p>The Journal records real trades by hand — date, instrument, direction, size, entry, exit, costs,
+and, most importantly, <b>why</b>. It then measures them with exactly the same statistics used on
+the bots: win rate, profit factor, payoff ratio, worst losing run, worst drawdown, average per
+trade, and the honesty split.</p>
+
+<p>It also replays a chosen bot over exactly the days the reader's log covers, from the same
+starting capital, and puts the two side by side. Not as a competition — the sizes and instruments
+differ, so it is a rough comparison rather than a fair race — but to answer one question that is
+otherwise unanswerable: <b>did my judgement add anything to a mechanical rule, or not?</b></p>
+
+<p>The note field is the part that matters most in the long run. It is the thing the reader will
+read in three months, when they have forgotten what they were thinking and can finally see it
+clearly. My third account would have survived if such a note had existed.</p>
+
+
+<h2><span class="n">10</span>The paths you did not take</h2>
+
+<p>A real trading account shows you exactly one timeline: the one you chose. You place the trade,
+you set the stop where you set it, you close it when you close it — and whatever the alternative
+would have done is unknowable forever. You are left with a feeling about it, and feelings about
+counterfactuals are the least reliable evidence there is. Everyone remembers the trade they should
+have held. Almost nobody remembers the nine times holding would have been a disaster.</p>
+
+<p>The future is decided by what we do in the present, and in a real account you only ever get to
+do one thing. Touchstone's purpose is to give you the others.</p>
+
+<h3>Backwards: the path you could have taken</h3>
+<p>A backtest is a path not taken, run in reverse. It asks what a rule would have done over a year
+that has already happened — including the parts of that year you were not watching, were not
+trading, or had already talked yourself out of.</p>
+
+<h3>Forwards: the path running alongside you</h3>
+<p>This is the more valuable half, and it is the reason saved bots exist. <b>You can trade your own
+money at your own broker, and have Touchstone run the alternative version of you at the same
+time, on the same market, day by day.</b></p>
+
+<p>Save the rule you almost followed. The tighter stop you decided against. The mechanical version
+of the discretion you are currently exercising. From that moment it keeps its own honest record,
+recomputed over every new candle — and because it was saved <em>before</em> the outcome, it cannot
+be tuned to flatter itself afterwards.</p>
+
+<p>Three months later you are not choosing between two opinions. You are reading two records over
+the same days, in the same market, and one of them is the version of you that you did not become.</p>
+
+<div class="pull">You cannot run your real account twice. This is the closest thing available: a
+second, third and fourth version of your decision, running in parallel, costing nothing, and
+keeping score.</div>
+
+<h3>And against your own hand</h3>
+<p>The Journal closes the loop. It replays a chosen rule over exactly the days your own logged
+trades cover, from the same starting capital, and puts the two side by side — your judgement
+against the mechanism, over identical market conditions. Several saved bots can be compared
+against each other in the same way, so a whole family of paths can be watched at once.</p>
+
+<p>It is worth saying plainly what this is for. It is not to prove that a bot beats you, and quite
+often it will not. It is to convert <em>"I wonder whether I should have…"</em> from a private,
+permanent, unanswerable regret into a number you can look at.</p>
+
+<p>The third account in section 2 is exactly this. I had roughly $17,000 available and waited for
+one red position to turn green. Had a bot been running the rule I had written down when I was calm
+— take the money at the target, do not negotiate with a losing position — the comparison would
+have been sitting on my phone in black and white while I was busy arguing with myself. It would
+not have forced me to act. But I would have had to look at it.</p>
+
+
+<h2><span class="n">11</span>What Touchstone is not</h2>
+
+<ul>
+  <li><b>Not a signal service.</b> It never says buy or sell. The scores describe what has
+    happened; they do not instruct.</li>
+  <li><b>Not investment advice.</b> We are not licensed advisers and we do not manage money.</li>
+  <li><b>Not a broker.</b> No orders are placed, no money is handled, no account can be funded.</li>
+  <li><b>Not a promise.</b> Most trading ideas that get measured honestly turn out not to work.
+    Several in this project's own history did exactly that and were dropped.</li>
+  <li><b>Not a substitute for your own judgement.</b> The tool measures. Deciding remains yours.</li>
+</ul>
+
+
+<h2><span class="n">12</span>Privacy, and what leaves your phone</h2>
+
+<p>There is no account and no sign-up. There are no cookies, no analytics, no advertising and no
+third-party trackers. Saved bots, the trade journal, the chosen language and every Lab setting are
+held in the browser's own storage on the reader's device. We never receive them, cannot read them
+and cannot recover them.</p>
+
+<p>The application reads exactly one thing from the device: the clock and time zone, so that dates,
+sessions and "updated twelve minutes ago" are correct where the reader is. This needs no
+permission and is never transmitted. It cannot access location, contacts, camera, microphone or
+files.</p>
+
+<p>Two requests leave the device: the scoreboard data and the price archive, both from our own
+site. There are no third-party scripts and no downloaded fonts — the application uses the typefaces
+already on the device, which is also why it works with no signal.</p>
+
+
+<div class="box risk">
+  <h2 style="margin-top:0"><span class="n">13</span>Risk statement</h2>
+
+  <p><b>Trading is risky and most people who attempt it lose money.</b> Trading gold, silver,
+  indices, cryptocurrencies, contracts for difference and other leveraged products carries a high
+  risk of loss. With some brokers you can lose more than you deposit. You should not trade with
+  money you cannot afford to lose entirely.</p>
+
+  <p><b>Simulated results are not real results.</b> Every figure produced by this application is a
+  simulation. It charges no spread or financing unless the reader sets one; it cannot suffer a
+  rejected order, a requote, a gap through a stop, or a broker outage; and it is computed with
+  hindsight over data that already exists. Real execution differs, and it differs most in exactly
+  the fast conditions where it matters most.</p>
+
+  <p><b>Past performance never predicts future results.</b> This is not a formality. A strategy
+  that worked for a year can stop working permanently, and it will not announce it.</p>
+
+  <p><b>Nothing here is advice.</b> Nothing in this application or this document is investment,
+  financial, legal or tax advice, or a recommendation to buy or sell anything. Zb International
+  Co., Ltd. is not a licensed investment adviser, fund manager or broker. Any decision taken in a
+  real market is entirely the reader's own.</p>
+
+  <p><b>The data may be wrong.</b> Prices, news and economic figures come from third-party sources
+  and may be delayed, incomplete or incorrect. The application is provided "as is" with no warranty
+  of availability, accuracy or continuity.</p>
+
+  <p><b>The author's own record is a warning, not a credential.</b> The accounts described in
+  section 2 all ended at zero. They are included to explain why the tool exists, not to suggest
+  that anyone should expect similar gains — or to imply that the losses were unusual. They were
+  not.</p>
+
+  <p style="margin-bottom:0"><b>If you are new:</b> the responsible use of this tool is to find
+  out that an idea does not work, before that discovery is made with money.</p>
+</div>
+
+
+<h2><span class="n">14</span>Roadmap and how it will be decided</h2>
+
+<p>A measuring era began on 15 August 2026. From that date the bots run under their current rules,
+with the economic-data layer live, and every data morning is recorded: the score when the bots
+first knew, and where gold stood four and twenty-four hours later.</p>
+
+<p>Six to twelve months of that record decides what happens next. If it shows that these readings
+predict something, further work is justified — more instruments, shorter timeframes, alerts,
+deeper tests. If it shows they do not, that will be published here too, and the tool will carry on
+being a good place to discover that a strategy does not work, which is worth knowing before it
+costs money.</p>
+
+<p>What will not change: the honest measurement is the point of the project, and a tool that hid
+whether a strategy was luck would be the opposite of what this is for.</p>
+
+<h3>Contact</h3>
+<p class="small">Zb International Co., Ltd., 24/29 Moo 8, Sao Thong Hin Subdistrict, Bang Yai
+District, Nonthaburi 11140, Thailand. Registration 0125567021983. info@zb-international.com</p>
+
+<p class="small" style="margin-top:6mm; color:#7a7365">© 2026 Zb International Co., Ltd. All rights
+reserved. Touchstone, its bot rules, texts and designs are the property of Zb International Co.,
+Ltd. This document is offered in English; where a translation and the English version disagree,
+the English version applies.</p>
+
+<svg class="endmark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="104" fill="#0a0a0a"/><rect x="4" y="4" width="504" height="504" rx="102" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="8"/><path d="M178 106.0 L232.0 200 L124.0 200 Z" fill="#f5c445"/><path d="M330 167.7 L398.0 286 L262.0 286 Z" fill="#f5c445"/><path d="M206 267.8 L282.0 400 L130.0 400 Z" fill="#f5c445"/><path d="M338 365.5 L390.0 456 L286.0 456 Z" fill="#f5c445"/></svg>
+
+  <a class="dl" href="Touchstone-White-Paper.pdf" download>Download as PDF (12 pages)</a>
+  <p class="small" style="text-align:center">For printing, or to send to someone.</p>
+</div>
+<script>
+  /* Back to wherever the reader came from — which keeps the app's scroll
+     position and open tab. If they arrived here directly, go to the app. */
+  document.getElementById("back").onclick = function () {
+    if (history.length > 1) history.back();
+    else location.href = "./";
+  };
+
+  /* Day / night. The icon shows what tapping will GIVE you, not what you are
+     already looking at, and the choice is written to the app's own setting —
+     someone who picks day while reading meant day, not day-just-this-once. */
+  var root = document.documentElement;
+  var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2'
+          + 'M5 5l1.4 1.4M17.6 17.6L19 19M2.5 12h2M19.5 12h2'
+          + 'M5 19l1.4-1.4M17.6 6.4L19 5"/>';
+  var MOON = '<path d="M20.5 14.6A8.6 8.6 0 019.4 3.5a8.6 8.6 0 1011.1 11.1z"/>';
+
+  function paintTheme() {
+    var light = root.getAttribute("data-theme") === "light";
+    document.querySelector('meta[name="theme-color"]')
+      .setAttribute("content", light ? "#f6f4ed" : "#0b0a08");
+    document.getElementById("themeIcon").innerHTML = light ? MOON : SUN;
+    document.getElementById("theme")
+      .setAttribute("aria-label", light ? "Switch to night" : "Switch to day");
+  }
+  paintTheme();
+
+  document.getElementById("theme").onclick = function () {
+    var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("touchstone-theme", next); } catch (e) {}
+    paintTheme();
+  };
+
+  /* still on Auto? then follow the phone when it changes at sunset */
+  matchMedia("(prefers-color-scheme: light)").addEventListener("change", function (e) {
+    var m = null;
+    try { m = localStorage.getItem("touchstone-theme"); } catch (err) {}
+    if (m === "auto") {
+      root.setAttribute("data-theme", e.matches ? "light" : "dark");
+      paintTheme();
+    }
+  });
+</script>
+</body>
+</html>
