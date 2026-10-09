@@ -1,0 +1,13 @@
+{
+ "t": "2026-10-09T23:59Z",
+ "stepped": "2026-10-09T23:58Z",
+ "prices_checked": 20991,
+ "record_rows": 517,
+ "record_intact": true,
+ "record_since": "2026-08-16T04:55:01Z",
+ "days_sealed": 51,
+ "era_start": "2026-08-20T02:30Z",
+ "spot_sources": 3,
+ "move_checkers": 2,
+ "real_orders": 0
+}
