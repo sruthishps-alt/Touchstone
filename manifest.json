@@ -1,0 +1,16 @@
+{
+  "name": "Touchstone — gold bots, honestly measured",
+  "short_name": "Touchstone",
+  "description": "Live paper-trading gold bots and a lab where you build and test your own. Educational only — no real money, no advice.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
