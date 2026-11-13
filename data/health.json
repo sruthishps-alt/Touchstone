@@ -1,0 +1,176 @@
+{
+ "note": "diagnostics for the maintainers. The app never reads this.",
+ "built": "2026-11-13T21:56Z",
+ "build": {
+  "gh_step.py": "e712c97a32",
+  "make_desk.py": "7d973c37c9",
+  "bigmove.py": "77a718774d",
+  "verify.py": "ef16b6ccf0",
+  "feed.py": null,
+  "simulator.py": "887fe4b7fa",
+  "pricecheck.py": "7c4da1f2a1",
+  "econ.py": "58947f4fb9",
+  "news.py": "f6443e6aef",
+  ".github/workflows/step.yml": "8a225945f0"
+ },
+ "run": {
+  "stepped": "2026-11-13T21:41Z",
+  "feed": "2026-11-13T21:30Z",
+  "stall": null,
+  "price": 3880.37
+ },
+ "prices": {
+  "candles": [
+   "A S1: 236 bars folded from 1416 fives \u2014 used"
+  ],
+  "spot": [
+   "B: 3882.4",
+   "I: 3880.01",
+   "F: not asked \u2014 the other two agree (0.06% apart)",
+   "MIDDLE of 2: 3881.2"
+  ],
+  "spot_from": "B+I",
+  "src": "S1"
+ },
+ "checks": [
+  {
+   "t": 1789583400,
+   "pct": -1.23,
+   "check": {
+    "checked_at": 1789596315,
+    "ours": -1.23,
+    "tol": 0.15,
+    "A": -1.17,
+    "A_why": "ok",
+    "B": -1.226,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -1.17% and -1.23% against our -1.23% (allowing 0.18 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1791374400,
+   "pct": -0.99,
+   "check": {
+    "checked_at": 1791376935,
+    "ours": -0.99,
+    "tol": 0.15,
+    "A": -0.882,
+    "A_why": "ok",
+    "B": -0.99,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -0.88% and -0.99% against our -0.99% (allowing 0.15 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1791981000,
+   "pct": -1.36,
+   "check": {
+    "checked_at": 1791983528,
+    "ours": -1.36,
+    "tol": 0.15,
+    "A": -1.32,
+    "A_why": "ok",
+    "B": -1.358,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -1.32% and -1.36% against our -1.36% (allowing 0.20 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1792764000,
+   "pct": -1.01,
+   "check": {
+    "checked_at": 1792766502,
+    "ours": -1.01,
+    "tol": 0.15,
+    "A": -1.001,
+    "A_why": "ok",
+    "B": -1.011,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -1.00% and -1.01% against our -1.01% (allowing 0.15 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1793626200,
+   "pct": 0.82,
+   "check": {
+    "checked_at": 1793629939,
+    "ours": 0.82,
+    "tol": 0.15,
+    "A": 0.873,
+    "A_why": "ok",
+    "B": 0.816,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: +0.87% and +0.82% against our +0.82% (allowing 0.15 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1793770200,
+   "pct": 1.12,
+   "check": {
+    "checked_at": 1793772816,
+    "ours": 1.12,
+    "tol": 0.15,
+    "A": 1.104,
+    "A_why": "ok",
+    "B": 1.117,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: +1.10% and +1.12% against our +1.12% (allowing 0.17 on a move this size)",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1793894400,
+   "pct": 0.87,
+   "check": {
+    "checked_at": 1794606950,
+    "ours": 0.87,
+    "tol": 0.15,
+    "A": 0.583,
+    "A_why": "ok",
+    "B": 0.872,
+    "B_why": "ok",
+    "verdict": "unknown",
+    "why": "the two sources disagree with each other (+0.58% vs +0.87%, 0.29 apart), so neither can judge us",
+    "rule": 2
+   }
+  },
+  {
+   "t": 1794493800,
+   "pct": -0.88,
+   "check": {
+    "checked_at": 1794496513,
+    "ours": -0.88,
+    "tol": 0.15,
+    "A": -0.925,
+    "A_why": "ok",
+    "B": -0.883,
+    "B_why": "ok",
+    "verdict": "verified",
+    "why": "both agree: -0.93% and -0.88% against our -0.88% (allowing 0.15 on a move this size)",
+    "rule": 2
+   }
+  }
+ ],
+ "flows": {
+  "fetch": "cot 1061997B; etf 543904B xlsx/zip",
+  "t": "2026-11-13T02:41Z",
+  "have_data": true,
+  "macro_inputs": {
+   "real_chg": 0.13,
+   "dxy_chg_pct": 0.18,
+   "oil_chg_pct": -2.3
+  }
+ },
+ "era": 3
+}

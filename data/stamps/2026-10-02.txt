@@ -1,0 +1,12 @@
+Touchstone measuring record — daily seal
+Zb International Co., Ltd. (Thailand)
+
+day      2026-10-02
+rows     410
+ruleset  49db6077bd14535e
+head     eb1096ec03afde001ecf3d2257f24ed427e037741c9c641b88758954064f37e6
+
+'head' is the SHA-256 fingerprint of the newest row of
+ledger.jsonl, each row of which fingerprints the row before
+it. Verify the chain with: python3 ledger.py
+Verify this file's date with: ots verify 2026-10-02.txt.ots
